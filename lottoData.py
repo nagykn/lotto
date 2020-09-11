@@ -39,11 +39,11 @@ def main():
 	if input("Tippek kézi megadása (N/i)").upper() == "I":
 		print("\nSzóközökkel elválasztva adjon meg öt különbüző egész számot [1;90]:")
 		print("(nyomjon entert ha vége)")
-		i = 1
-		while tipp:=input(f"{i}. tipp:"):
+		n = 0
+		while tipp:=input(f"{n+1}. tipp:"):
 			try:
 				TIPPEK.append([int(tipp.split()[i]) for i in range(4)])
-				i+=1
+				n+=1
 			except ValueError:
 				print("Csak számokat adhat meg!")
 				continue
