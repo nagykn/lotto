@@ -31,6 +31,7 @@ def tippek_generalas(n):
 
 
 def main():
+	TIPPEK = []
 	gen = data("lottoDB.csv")
 
 	heti_random = False
@@ -41,7 +42,7 @@ def main():
 		i = 1
 		while tipp:=input(f"{i}. tipp:"):
 			try:
-				TIPPEK.append([int(tipp[i]) for i in range(4)])
+				TIPPEK.append([int(tipp.split()[i]) for i in range(4)])
 				i+=1
 			except ValueError:
 				print("Csak számokat adhat meg!")
@@ -68,7 +69,7 @@ def main():
 
 		if input("\nMinden héten más random tippeket akarsz megjátszani? (I/n)").upper() == "I":
 			heti_random = True
-			
+
 	input("\nMehet?")
 	talalatok = [0,0,0,0,0,0]
 	for value in gen:
