@@ -1,7 +1,9 @@
-from random import sample
+from random import sample, random
 from collections import Counter
 
 VALUES = [l for l in range(1,91)]
+PAROS = [l for l in range(2,91,2)]
+PARATLAN = [l for l in range(1,91,2)]
 TIPPEK = []
 
 def data(file_name):
@@ -18,14 +20,22 @@ def stat_str(line):
 def random_tipp():
 	return  sorted(sample(VALUES, k=5))
 
+def random_eros_tipp():
+	kimarad = sample([0,1,2,3,4],k=1)[0]
+	if round(random()):
+		return sorted(sample(PAROS[:kimarad*9]+PAROS[kimarad*9+9:],k=3)+sample(PARATLAN[:kimarad*9]+PARATLAN[kimarad*9+9:],k=2))
+	else:
+		return sorted(sample(PARATLAN[:kimarad*9]+PARATLAN[kimarad*9+9:],k=2)+sample(PAROS[:kimarad*9]+PAROS[kimarad*9+9:],k=3))
+
+
 def talalat(tipp,huzas):
 	count = Counter(tipp+huzas)
 	return sum([1 for i in count.values() if i==2])
 
-def tippek_generalas(n):
+def tippek_generalas(n, callback):
 	lista = []
 	for i in range(n):
-		tipp = random_tipp()
+		tipp = callback()
 		lista.append(tipp)
 	return lista
 
@@ -62,7 +72,13 @@ def main():
 			except ValueError:
 				print("[*] A tippek száma 20 lesz!")
 
-		TIPPEK = tippek_generalas(n)
+		if input("Erős tipp használata: (I/n)").upper() == "N":
+			technika = random_tipp
+		else:
+			technika = random_eros_tipp
+
+
+		TIPPEK = tippek_generalas(n,technika)
 
 		for i,v in enumerate(TIPPEK):
 			print(f"{i+1}. tipp: {v}")
@@ -74,16 +90,19 @@ def main():
 	talalatok = [0,0,0,0,0,0]
 	for value in gen:
 		huzas = [int(i) for i in stat_str(value)[11:]]
+		
 		for tipp in TIPPEK:
 			helyes = talalat(tipp,huzas)
 			talalatok[helyes]+=1
 		if heti_random:
-			TIPPEK = tippek_generalas(n)
+			TIPPEK = tippek_generalas(n,technika)
 
 	print(f"\n\tGratulálok!\n1957 és 2020 között, ha heti {n} szelvényt vettél volna:")
 	print(f"{talalatok[5]} telitalálatod;")
 	print(f"{talalatok[4]} négyes találatod;")
 	print(f"{talalatok[3]} hármastalálatod lehetne.")
+
+
 
 if __name__=="__main__":
 	main()
